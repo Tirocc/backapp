@@ -110,18 +110,7 @@ if st.button("🚀 Alles Berechnen", use_container_width=True, type="primary"):
                     w2 = total_bleche // 2
                     st.success(f"**{name}** ({menge} Stk): Aufgeteilt auf 2 Wägen 👉 1x {w1} Bleche & 1x {w2} Bleche")
                 
-                # SONDERFALL 2: Tafel Teiglinge (6 Bleche in Sonderwagen)
-                elif name == "Tafel Teigling":
-                    if total_bleche >= 6:
-                        rest_nach_sonder = total_bleche - 6
-                        vw = rest_nach_sonder // produkte[name]["bleche_pro_wagen"]
-                        rb = rest_nach_sonder % produkte[name]["bleche_pro_wagen"]
-                        rest_str = f" + 1 Wagen mit {rb} Blechen" if rb > 0 else ""
-                        st.success(f"**{name}** ({menge} Stk): 1 Sonder-Wagen (6 Bleche) + {vw} volle Wägen{rest_str}")
-                    else:
-                        st.success(f"**{name}** ({menge} Stk): 1 Sonder-Wagen mit {total_bleche} Blechen")
-                
-                # STANDARD-PRODUKTE
+                # STANDARD-PRODUKTE (Tafel Teiglinge sind jetzt wieder ein ganz normaler Wagen!)
                 else:
                     rest_str = f" + 1 Wagen mit {r_bleche} Blechen" if r_bleche > 0 else ""
                     st.success(f"**{name}** ({menge} Stk): {v_wagen} volle Wägen{rest_str}")
@@ -130,7 +119,8 @@ if st.button("🚀 Alles Berechnen", use_container_width=True, type="primary"):
         st.subheader("🥣 Teigbestellung")
         
         teig_auftraege = [
-            ("Tafel", summe_tafel + tafel_teig_stk, "Tafel (Gesamt inkl. Sondersorten & Teiglinge)"),
+            # NEU: Hier rechnen wir die 210 Extra-Stück (+6 Bleche) einfach fest in den Teigberg mit ein!
+            ("Tafel", summe_tafel + tafel_teig_stk + 210, "Tafel (Gesamt inkl. Teiglinge & +210 Extra)"),
             ("Tafel Sonntag", tafel_so_stk, "Tafel Sonntag"),
             ("Laugen", summe_laugen + summe_laugen_teig, "Laugen (inkl. Teiglinge)"),
             ("Mühlenrädle", summe_muehlen, "Mühlenrädle"),
